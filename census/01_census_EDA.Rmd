@@ -30,12 +30,6 @@ download.file("https://archive.ics.uci.edu/ml/machine-learning-databases/adult/a
               "data/test_raw.csv")
 ```
 
-```{r, eval=FALSE, include=FALSE}
-# Alternative download location
-#download.file("http://mlr.cs.umass.edu/ml/machine-learning-databases/adult/adult.data", "data/train_raw.csv")
-#download.file("http://mlr.cs.umass.edu/ml/machine-learning-databases/adult/adult.test", "data/test_raw.csv")
-```
-
 ```{r, message=FALSE, echo=FALSE, warning=FALSE}
 col_names = c(
   "age", "workclass", "fnlwgt", "education", "education_num",
@@ -62,14 +56,8 @@ format.rawdata <- function(data){
     na.omit
 }
 
-create.interactions <- function(data){
-  data %>%
-    mutate(education_x_occupation = paste(education, occupation, sep = ":")) %>%
-    mutate(age_buckets_x_education_x_occupation = paste(age_buckets, education, occupation, sep = ":"))
-}
-
-train <- train_raw %>% format.rawdata #%>% create.interactions
-test  <- test_raw  %>% format.rawdata #%>% create.interactions
+train <- train_raw %>% format.rawdata
+test  <- test_raw  %>% format.rawdata
 ```
 
 ## Plot categorical columns
@@ -87,7 +75,7 @@ Most of the columns in the census data are categorical. We plot a few of the mos
 
 ```{r}
 plot.main.effects <- function(data, x, y){
-  p <- data %>%
+  data %>%
     mutate_(group = x, metric = y) %>%
     group_by(group) %>%
     summarize(percent = 100 * mean(metric)) %>%
@@ -96,7 +84,6 @@ plot.main.effects <- function(data, x, y){
     coord_flip() +
     labs(y = "Percent", x = "") +
     ggtitle(paste("Percent surveyed with incomes over $50k by", x))
-  ggplotly(p, tooltip = "percent")
 }
 
 plot.main.effects(train, "marital_status", "label")
