@@ -115,14 +115,14 @@ history <- model %>% fit(
 ## Model Performance
 
 ```{r}
-score <- model %>% evaluate(
+perf <- model %>% evaluate(
   x_test, y_test,
   batch_size = batch_size,
   verbose = 1
 )
 
-score[[1]] # Score
-score[[2]] # Accuracy
+perf[[1]] # Score
+perf[[2]] # Accuracy
 ```
 
 ## Predictions
@@ -130,14 +130,34 @@ score[[2]] # Accuracy
 Use the model to predict outcomes on the test data. Compare to actuals.
 
 ```{r}
+# Predicted topic categories
 pred <- model %>% predict_classes(
   x_test,
   batch_size = batch_size,
   verbose = 1
-)
+  )
 
+# Actual topic categories
 actual <- reuters$test$y
 
-table(pred, actual)
+# Accuracy
+mean(pred == actual)
+```
+
+Plot the results
+
+```{r}
+library(tidyverse)
+tibble(
+  pred = pred,
+  actual = actual
+  ) %>%
+  group_by(pred, actual) %>%
+  tally %>%
+  mutate(pred_pct = round(100 * n / sum(n), 2)) %>%
+  ggplot(aes(pred, actual, fill = pred_pct)) +
+  geom_tile() +
+  labs(x = "Pred", y = "Actual") +
+  ggtitle("Topic Categories")
 ```
 
