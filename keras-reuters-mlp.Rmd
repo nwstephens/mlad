@@ -45,6 +45,7 @@ These data from [Reuters](http://www.daviddlewis.com/resources/testcollections/r
 
 ```{r}
 reuters <- dataset_reuters(num_words = max_words, test_split = 0.2)
+words <- dataset_reuters_word_index()
 
 x_train <- reuters$train$x
 y_train <- reuters$train$y
@@ -109,18 +110,24 @@ history <- model %>% fit(
   verbose = 1,
   validation_split = 0.1
 )
+```
 
+## Model Performance
+
+```{r}
 score <- model %>% evaluate(
   x_test, y_test,
   batch_size = batch_size,
   verbose = 1
 )
 
-cat('Test score:', score[[1]], '\n')
-cat('Test accuracy', score[[2]], '\n')
+score[[1]] # Score
+score[[2]] # Accuracy
 ```
 
-## Predict
+## Predictions
+
+Use the model to predict outcomes on the test data. Compare to actuals.
 
 ```{r}
 pred <- model %>% predict_classes(
