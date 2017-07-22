@@ -138,3 +138,40 @@ saveRDS(m1, file = "data/logisticModel.rds")
 saveRDS(m2, file = "data/elasticnetModel.rds")
 ```
 
+***
+
+# Caret
+
+If you want to try other models, take a look at the `caret` package. The `caret` package (short for _C_lassification _A_nd _RE_gression _T_raining) is a set of functions that attempt to streamline the process for creating predictive models. The package contains tools for:
+
+* data splitting
+* pre-processing
+* feature selection
+* model tuning using resampling
+* variable importance estimation
+
+as well as other functionality. See the [caret documentation](http://topepo.github.io/caret/index.html) for more details.
+
+```{r, eval=FALSE}
+library(caret)
+library(e1071)
+library(gbm)
+
+## convert label to factor
+train$y <- factor(train$label)
+
+## Cross validation
+fitControl <- trainControl(method = "cv", number = 3, repeats = 1)
+
+## Fit a gbm model with cross validation (this will take a long time!)
+gbmFit1 <- train(y ~ gender + education + occupation + workclass + marital_status + age_buckets, 
+                 data = train, 
+                 method = "gbm", 
+                 trControl = fitControl,
+                 verbose = FALSE)
+
+## Summarize
+summary(gbmFit1)
+```
+
+
