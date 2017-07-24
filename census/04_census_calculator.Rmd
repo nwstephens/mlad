@@ -97,3 +97,9 @@ predictFromSaved <- function(model_rds = "data/logisticModel.rds", train_csv = "
   runGadget(ui, server)
 }
 ```
+
+```{r}
+pred <- predictFromSaved()
+pred
+```
+
