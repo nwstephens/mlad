@@ -20,6 +20,8 @@ Base R - we could use built-in functions like aggregate(), by(), ave()
 
 Data are here for this example:
 
+https://archive.ics.uci.edu/ml/datasets/Bank+Marketing
+
 https://archive.ics.uci.edu/ml/machine-learning-databases/00222/bank.zip
 
 Adaption of examples by nightrose Data Scientist AIG New York
